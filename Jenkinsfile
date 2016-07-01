@@ -8,6 +8,5 @@ node {
 
    stage 'check result'
    sh 'touch /tmp/test1&&ls /tmp/test1'
-}
 
 }
