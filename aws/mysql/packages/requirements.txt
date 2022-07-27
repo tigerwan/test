@@ -1,0 +1,2 @@
+mysql_connector_python >= 8.0.26
+tornado >= 6.1

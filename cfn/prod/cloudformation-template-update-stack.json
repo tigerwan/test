@@ -1,0 +1,399 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ProcessLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/crule-sg-rule-prod-process",
+        "RetentionInDays": 30
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "prod",
+                  "crule-sg-rule",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crule-sg-rule-prod*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crule-sg-rule-prod*:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "sts:AssumeRole"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "ReadOnlyRole",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::If": [
+                        "RunRemediationCondition",
+                        {
+                          "Fn::GetAtt": [
+                            "WriteRole",
+                            "Arn"
+                          ]
+                        },
+                        {
+                          "Ref": "AWS::NoValue"
+                        }
+                      ]
+                    },
+                    "arn:aws:iam::877800914193:role/AutomationCentralRole"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "config:PutEvaluations",
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "crule-sg-rule",
+              "prod",
+              {
+                "Ref": "AWS::Region"
+              },
+              "lambdaRole"
+            ]
+          ]
+        }
+      }
+    },
+    "ProcessLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "news-ops-serverless",
+          "S3Key": "serverless/crule-sg-rule/prod/1565912907939-2019-08-15T23:48:27.939Z/crule-sg-rule.zip"
+        },
+        "FunctionName": "crule-sg-rule-prod-process",
+        "Handler": "process.lambda_handler",
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.9",
+        "Timeout": 300,
+        "Tags": [
+          {
+            "Key": "Bu",
+            "Value": "News Technology Shared Services"
+          },
+          {
+            "Key": "Owner",
+            "Value": "hatfieldd"
+          },
+          {
+            "Key": "Environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "Product",
+            "Value": "crule-sg-rule"
+          },
+          {
+            "Key": "Name",
+            "Value": "crule-sg-rule-1.0-prod"
+          }
+        ]
+      },
+      "DependsOn": [
+        "ProcessLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ProcessLambdaVersionGyzq1jdgRLVDaCTwcHzxWMJuIquknFSKCPigTtIRg": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ProcessLambdaFunction"
+        },
+        "CodeSha256": "xIZqERjrTcI66e+uJ2/7eqoUSAgC52YzA51aMK1GRgU="
+      }
+    },
+    "ConfigRuleTrigger": {
+      "Type": "AWS::Config::ConfigRule",
+      "DependsOn": [
+        "ProcessLambdaFunction",
+        "RulePermission"
+      ],
+      "Properties": {
+        "ConfigRuleName": "crule-sg-rule",
+        "Scope": {
+          "ComplianceResourceTypes": [
+            "AWS::EC2::SecurityGroup"
+          ]
+        },
+        "Source": {
+          "Owner": "CUSTOM_LAMBDA",
+          "SourceDetails": [
+            {
+              "MaximumExecutionFrequency": "TwentyFour_Hours",
+              "MessageType": "ScheduledNotification",
+              "EventSource": "aws.config"
+            },
+            {
+              "MessageType": "ConfigurationItemChangeNotification",
+              "EventSource": "aws.config"
+            }
+          ],
+          "SourceIdentifier": {
+            "Fn::GetAtt": [
+              "ProcessLambdaFunction",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "RulePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "DependsOn": "ProcessLambdaFunction",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ProcessLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "config.amazonaws.com"
+      }
+    },
+    "ReadOnlyRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "sg-rule-readonly",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+                "AWS": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:iam::",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":root"
+                      ]
+                    ]
+                  }
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "readonly-inline-policy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:DescribeSecurityGroup*"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "WriteRole": {
+      "Type": "AWS::IAM::Role",
+      "Condition": "RunRemediationCondition",
+      "Properties": {
+        "RoleName": "sg-rule-write",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+                "AWS": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:iam::",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":root"
+                      ]
+                    ]
+                  }
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "write-inline-policy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:RevokeSecurityGroupIngress",
+                    "ec2:RevokeSecurityGroupEgress",
+                    "iam:PassRole"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "LogGroupSubscriptionFilter": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:ap-southeast-2:877800914193:destination:central-logging-destination",
+        "FilterPattern": "{ $.type = RESULT}",
+        "LogGroupName": {
+          "Ref": "ProcessLogGroup"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": "news-ops-serverless"
+    },
+    "ProcessLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ProcessLambdaVersionGyzq1jdgRLVDaCTwcHzxWMJuIquknFSKCPigTtIRg"
+      }
+    },
+    "ConfigRuleTriggerARN": {
+      "Description": "Config Rule ARN for Trigger",
+      "Value": {
+        "Fn::GetAtt": [
+          "ConfigRuleTrigger",
+          "Arn"
+        ]
+      }
+    },
+    "LambdaFunctionArn": {
+      "Description": "Lambda ARN",
+      "Value": {
+        "Fn::GetAtt": [
+          "ProcessLambdaFunction",
+          "Arn"
+        ]
+      }
+    },
+    "ReadOnlyRoleARN": {
+      "Description": "ReadOnly Role ARN",
+      "Value": {
+        "Fn::GetAtt": [
+          "ReadOnlyRole",
+          "Arn"
+        ]
+      }
+    },
+    "WriteRoleARN": {
+      "Description": "Write Role ARN",
+      "Condition": "RunRemediationCondition",
+      "Value": {
+        "Fn::GetAtt": [
+          "WriteRole",
+          "Arn"
+        ]
+      }
+    },
+    "ShareServiceRoleARN": {
+      "Description": "Central Service Access Role ARN",
+      "Value": "arn:aws:iam::877800914193:role/AutomationCentralRole"
+    }
+  },
+  "Conditions": {
+    "RunRemediationCondition": {
+      "Fn::Equals": [
+        "true",
+        "true"
+      ]
+    }
+  }
+}

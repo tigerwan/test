@@ -1,0 +1,51 @@
+policies:
+  - name: sg-add-permission
+    resource: security-group
+    description: |
+      Add rule to a security group. Filter any security group that
+      allows 0.0.0.0/0 or ::/0 (IPv6) ingress on port 22, remove
+      the rule and add user defined sg rule
+    mode:
+        type: cloudtrail
+        events:
+          - source: ec2.amazonaws.com
+            event: AuthorizeSecurityGroupIngress
+            ids: "responseElements.securityGroupRuleSet.items[].groupId"
+          - source: ec2.amazonaws.com
+            event: RevokeSecurityGroupIngress
+            ids: "requestParameters.groupId"
+        role: arn:aws:iam::{account_id}:role/CustodianAutomation
+        tags:
+          Owner: daniel.wan@news.com.au
+
+    filters:
+       - or:
+             - type: ingress
+               IpProtocol: "tcp"
+               Ports: [2020]
+               Cidr: "0.0.0.0/0"
+    actions:
+    #  - type: set-permissions
+    #    # remove the permission matched by a previous ingress filter.
+    #    remove-ingress: matched
+    #    # add a list of permissions to the group.
+    #    add-ingress:
+    #      # full syntax/parameters to authorize can be used.
+    #      - IpPermissions:
+    #        - IpProtocol: TCP
+    #          FromPort: 22
+    #          ToPort: 22
+    #          IpRanges:
+    #            - Description: Ops SSH Access
+    #              CidrIp: "1.1.1.1/32"
+    #            - Description: Security SSH Access
+    #              CidrIp: "2.2.2.2/32"
+      - type: notify
+        slack_template: slack
+        slack_msg_color: warning
+        to:
+          - https://hooks.slack.com/services/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
+          - https://hooks.slack.com/services/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
+        transport:
+          type: sqs
+          queue: https://sqs.ap-southeast-2.amazonaws.com/894695242608/CustodianNotifyQueue

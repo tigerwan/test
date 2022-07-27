@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: high-nginx-deployment
+  name: high-nginx-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: high-nginx-deployment
+  template:
+    metadata:
+      labels:
+        app: high-nginx-deployment
+    spec:
+      priorityClassName: "high-priority"      
+      containers:            
+       - image: nginx
+         name: high-nginx-deployment
+         resources:
+           limits:
+              memory: 1G

@@ -1,0 +1,24 @@
+def count_absolute_differences(l, x: int) -> int:
+    pairs = []
+    # pairs = set()
+    for i in range(len(l) - 1):
+        for j in range(i + 1, len(l)):
+
+            if abs(l[i] - l[j]) == x:
+                # print("{}".format(i))
+                # print("{}".format(j))
+                # print("{}-{}={}".format(l[i], l[j], l[i] - l[j]))
+                pairs.append([l[i], l[j]])
+                # pairs.update(tuple(sorted([i,j])))
+
+    sorted_pairs = [tuple(sorted(p)) for p in pairs]
+    # print(sorted_pairs)
+    return len(set(sorted_pairs))
+    # return len(pairs)
+
+
+if __name__ == "__main__":
+
+    print(count_absolute_differences([5, 6, 7, 8], 1))
+    print(count_absolute_differences([1, 1, 9, 8, 7], 0))
+    # print(count_absolute_differences([5, 2, 6, 3, 3], 3))

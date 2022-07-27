@@ -1,0 +1,18 @@
+™aws_iam_role"daniel_test_roleB/provider["registry.terraform.io/hashicorp/aws"]J­­
+ª£arnÙ/arn:aws:iam::431525257644:role/daniel_test_role²assume_role_policyÙˆ{"Version":"2012-10-17","Statement":[{"Sid":"","Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},"Action":"sts:AssumeRole"}]}«create_date´2020-09-30T01:18:30Z«description µforce_detach_policiesÂ¢id°daniel_test_role´max_session_durationÍ¤name°daniel_test_role«name_prefixÀ¤path¡/´permissions_boundaryÀ¤tags€©unique_idµAROAWI6HI4GWDQ645UC72ø
+õ£arnÙ/arn:aws:iam::431525257644:role/daniel_test_role²assume_role_policyÙÓ{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+«create_date´2020-09-30T01:18:30Z«description µforce_detach_policiesÂ¢id°daniel_test_role´max_session_durationÍ¤name°daniel_test_role«name_prefixÀ¤path¡/´permissions_boundaryÀ¤tags€©unique_idµAROAWI6HI4GWDQ645UC72R{"_new_extra_shim":{}}j*
+local
+‚¤pathÀ­workspace_dirÀdefaultr0.13.2

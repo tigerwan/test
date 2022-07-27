@@ -1,0 +1,35 @@
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  [32m+[0m create
+[0m
+Terraform will perform the following actions:
+
+[1m  # aws_iam_role.daniel_test_role[0m will be created[0m[0m
+[0m  [32m+[0m[0m resource "aws_iam_role" "daniel_test_role" {
+      [32m+[0m [0m[1m[0marn[0m[0m                   = (known after apply)
+      [32m+[0m [0m[1m[0massume_role_policy[0m[0m    = jsonencode(
+            {
+              [32m+[0m [0mStatement = [
+                  [32m+[0m [0m{
+                      [32m+[0m [0mAction    = "sts:AssumeRole"
+                      [32m+[0m [0mEffect    = "Allow"
+                      [32m+[0m [0mPrincipal = {
+                          [32m+[0m [0mService = "events.amazonaws.com"
+                        }
+                      [32m+[0m [0mSid       = ""
+                    },
+                ]
+              [32m+[0m [0mVersion   = "2012-10-17"
+            }
+        )
+      [32m+[0m [0m[1m[0mcreate_date[0m[0m           = (known after apply)
+      [32m+[0m [0m[1m[0mforce_detach_policies[0m[0m = false
+      [32m+[0m [0m[1m[0mid[0m[0m                    = (known after apply)
+      [32m+[0m [0m[1m[0mmax_session_duration[0m[0m  = 3600
+      [32m+[0m [0m[1m[0mname[0m[0m                  = "daniel_test_role"
+      [32m+[0m [0m[1m[0mpath[0m[0m                  = "/"
+      [32m+[0m [0m[1m[0munique_id[0m[0m             = (known after apply)
+    }
+
+[0m[1mPlan:[0m 1 to add, 0 to change, 0 to destroy.[0m

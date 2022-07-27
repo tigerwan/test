@@ -1,0 +1,105 @@
+{
+  "policy": {
+    "name": "sg-add-permission",
+    "resource": "security-group",
+    "description": "Add rule to a security group. Filter any security group that\nallows 0.0.0.0/0 or ::/0 (IPv6) ingress on port 22, remove\nthe rule and add user defined sg rule\n",
+    "mode": {
+      "type": "cloudtrail",
+      "events": [
+        {
+          "source": "ec2.amazonaws.com",
+          "event": "AuthorizeSecurityGroupIngress",
+          "ids": "responseElements.securityGroupRuleSet.items[].groupId"
+        },
+        {
+          "source": "ec2.amazonaws.com",
+          "event": "RevokeSecurityGroupIngress",
+          "ids": "requestParameters.groupId"
+        }
+      ],
+      "role": "arn:aws:iam::894695242608:role/CustodianAutomation",
+      "tags": {
+        "Owner": "daniel.wan@news.com.au",
+        "custodian-info": "mode=cloudtrail:version=0.9.16"
+      }
+    },
+    "filters": [
+      {
+        "or": [
+          {
+            "type": "ingress",
+            "IpProtocol": "tcp",
+            "Ports": [
+              2020
+            ],
+            "Cidr": "0.0.0.0/0"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "notify",
+        "slack_template": "slack",
+        "slack_msg_color": "warning",
+        "to": [
+          "https://hooks.slack.com/services/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",
+          "https://hooks.slack.com/services/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"
+        ],
+        "transport": {
+          "type": "sqs",
+          "queue": "https://sqs.ap-southeast-2.amazonaws.com/894695242608/CustodianNotifyQueue"
+        }
+      }
+    ]
+  },
+  "version": "0.9.16",
+  "execution": {
+    "id": "d8a24a9a-8afa-4c6b-8495-9db0abf5b1cb",
+    "start": 1654246171.909784,
+    "end_time": 1654246178.511904,
+    "duration": 6.6021199226379395
+  },
+  "config": {
+    "region": "ap-southeast-2",
+    "regions": [
+      "ap-southeast-2"
+    ],
+    "cache": "~/.cache/cloud-custodian.cache",
+    "profile": null,
+    "account_id": "894695242608",
+    "assume_role": null,
+    "external_id": null,
+    "log_group": null,
+    "tracer": null,
+    "metrics_enabled": null,
+    "metrics": null,
+    "output_dir": ".",
+    "cache_period": 15,
+    "dryrun": false,
+    "authorization_file": null,
+    "subparser": "run",
+    "config": null,
+    "configs": [
+      "sg.yml"
+    ],
+    "policy_filters": [],
+    "resource_types": [],
+    "verbose": null,
+    "quiet": null,
+    "debug": false,
+    "skip_validation": false,
+    "command": "c7n.commands.run",
+    "vars": null
+  },
+  "sys-stats": {},
+  "api-stats": {
+    "lambda.GetFunction": 1,
+    "lambda.UpdateFunctionCode": 1,
+    "lambda.GetFunctionConfiguration": 2,
+    "events.DescribeRule": 1,
+    "lambda.AddPermission": 1,
+    "events.ListTargetsByRule": 1
+  },
+  "metrics": []
+}

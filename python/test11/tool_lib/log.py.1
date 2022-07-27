@@ -1,0 +1,52 @@
+import logging
+
+
+class Log:
+    __logger_level = logging.INFO
+
+    """
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        else:
+            logging.info("singleton: {}, {}".format(cls.__logger_level, cls.__loggers))
+        return cls.__instance
+
+    def __init__(self):
+        pass
+    """
+
+    def __init__(self):
+        self.__loggers = {}
+        self.__level = logging.DEBUG
+        self.__format = None
+
+    @classmethod
+    def getLogger(cls, name):
+        """
+        Return the singleton logger and set logging level
+        """
+        logging.info("pre get logger: {}, {}".format(cls.__logger_level, cls.__loggers))
+        if name not in cls.__loggers:
+            cls.__loggers[name] = logging.getLogger(name)
+        cls.__loggers[name].setLevel(cls.__logger_level)
+        logging.info("post get logger:%s, %s,  %s, %s, %s", name, cls.__logger_level, cls.__loggers[name], cls.__loggers[name].getEffectiveLevel(), cls.__loggers)
+        return cls.__loggers[name]
+
+    @classmethod
+    def setLevel(cls, level=logging.INFO):
+        """
+        Apply logging level to all loggers
+        """
+        cls.__logger_level = level
+        for name in cls.__loggers:
+
+            cls.__loggers[name].setLevel(cls.__logger_level)
+            logging.info("update logger:%s, %s,  %s, %s, %s", name, cls.__logger_level, cls.__loggers[name], cls.__loggers[name].getEffectiveLevel(), cls.__loggers)
+
+    @classmethod
+    def setFormat(cls, format):
+        """
+        Set global logging format
+        """
+        logging.basicConfig(format=format)

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .terrafrom_plan{
+            font-style: italic;
+            text-indent:2em;
+        }
+        .terrafrom_plan .to_add{
+            color: rgb(0, 255, 0);
+        }
+        .terrafrom_plan .to_update{
+            color: rgb(255, 191, 0);
+        }
+        .terrafrom_plan .to_delete{
+            color: rgb(255, 0, 0);
+        }
+        .terrafrom_plan .resource_name{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <p>Hi,
+    <br>
+    <br>
+    Here is the terraform plan output. The pipeline is going to roll it out to the infrasutructure. If you have any concern, please abort the pipeline in 30 minutes.
+    <!-- Here is terraform plan output -->
+    <div class="terrafrom_plan">
+    {% for line in terrafrom_plan_output if line | trim | length > 0  -%}
+        {% set first_character_of_trim_line = line | trim | first %}
+        {% set line_in_html = line | replace('\n', '') | replace('  ', '&ensp;') %}
+        {%- if first_character_of_trim_line == '+' %}
+            <div class="to_add">{{ line_in_html }}</div>
+        {%- elif first_character_of_trim_line == '-' -%}
+            <div class="to_delete">{{ line_in_html }}</div>
+        {%- elif first_character_of_trim_line == '~' -%}
+            <div class="to_update">{{ line_in_html }}</div>
+        {%- elif first_character_of_trim_line == '#' -%}
+            <div class="resource_name">{{ line_in_html }}</div>
+        {%- else -%}
+            <div>{{ line_in_html }}</div>
+        {%- endif -%}
+    {%- endfor %}
+    </div>
+    <br>
+    Regards
+    <br>
+    Operation team
+    </p>
+    </body>
+</html>

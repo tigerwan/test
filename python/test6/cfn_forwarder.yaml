@@ -1,0 +1,450 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The AWS CloudFormation template for this Serverless application
+Resources:
+  EventforwarderLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: /aws/lambda/awsgo-cache-forwarder-prod-eventforwarder
+      RetentionInDays: 30
+  IamRoleLambdaExecution:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: !Join
+            - '-'
+            - - awsgo-cache-forwarder-prod
+              - lambda
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogStream'
+                  - 'logs:CreateLogGroup'
+                Resource:
+                  - !Sub >-
+                    arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/awsgo-cache-forwarder-prod*:*
+              - Effect: Allow
+                Action:
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - !Sub >-
+                    arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/awsgo-cache-forwarder-prod*:*:*
+              - Effect: Allow
+                Action:
+                  - 'events:PutEvents'
+                Resource: '*'
+      Path: /
+      RoleName: !Join
+        - '-'
+        - - awsgo-cache-forwarder-prod
+          - !Ref 'AWS::Region'
+          - lambdaRole
+  EventforwarderLambdaFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+            #!/usr/bin/env python -W ignore
+            import json
+            import os
+            import sys
+            import traceback
+            import datetime
+
+
+            try:
+                for lib_path in ['/opt', '/opt/autolib_local_repos']:
+                    sys.path.append(lib_path)
+            except:
+                traceback.print_exc()
+                raise
+            print('Successfully added the library path into system path {}'.format(sys.path))
+            from autolib_comm.libbof.log2 import Log2
+            from autolib_aws.libaws.aws_session import AwsSessionI
+            from autolib_aws.libawsp.awsp_event import AwspCloudWatchEventI
+
+
+            ###############################
+            # Business Logic Related Code.#
+            ###############################
+            def dump_error(tool_name, account_id, region, resource_id, resource_type, msg):
+                """dump error to CoudWatch log"""
+                report_meta = {
+                    'tool': tool_name,
+                    'type': 'RESULT',
+                    'account_id': account_id,
+                    'region': region,
+                    'utc_time': str(datetime.datetime.utcnow()),
+                    'resource_id': resource_id,
+                    'resource_type': resource_type,
+                    'notification_category': 'support',
+                    'msg': msg
+                }
+
+                Log2.info('Deliver a report as follows:')
+                Log2.info(json.dumps(report_meta))
+            def get_tool_name():
+                """"Return tool name"""
+                return os.getenv('TOOL')
+
+
+            def get_master_region():
+                """"Return tool name"""
+                return os.getenv('MASTER_REGION')
+
+
+            def forwarder(event, context):
+                """forward the CloudWatch event from the current region to the master region"""
+
+                try:
+                    Log2.info('Start ...')
+                    Log2.info('event:{}'.format(event))
+
+                    tool_name = get_tool_name()
+                    master_region = get_master_region()
+
+                    # prepare the event to forward
+                    entries = [
+                        {
+                            'Detail': json.dumps(event.get('detail')),
+                            'DetailType': event.get('detail-type'),
+                            'Resources': event.get('resources'),
+                            'Source': 'awsgo.{}'.format(event.get('source'))
+                        }
+                    ]
+
+                    # forward event to ther master region
+                    session = AwsSessionI.c_session(region_name=master_region)
+                    event_client = AwspCloudWatchEventI(session_rw=session)
+                    response = event_client.put_events(Entries=entries)
+
+                    # error handling
+                    if response and response.get('FailedEntryCount') > 0:
+                        raise Exception('Fail to forward event to the master region {}:{}'.format(master_region, response))
+
+                    Log2.info('Successfully forward a event to master region {}:{}'.format(master_region, entries))
+                    Log2.info('Exit ...')
+
+                except Exception as e:
+
+                    dump_error(
+                        tool_name=tool_name,
+                        account_id=event.get('account'),
+                        region=event.get('region'),
+                        resource_id=event.get('resources'),
+                        resource_type='N/A',
+                        msg=traceback.format_exc()
+                    )
+                    raise
+
+                return
+      FunctionName: awsgo-cache-forwarder-prod-eventforwarder
+      Handler: index.forwarder
+      MemorySize: 256
+      Role: !GetAtt
+        - IamRoleLambdaExecution
+        - Arn
+      Runtime: python3.7
+      Timeout: 900
+      Tags:
+        - Key: Bu
+          Value: News Technology Shared Services
+        - Key: Owner
+          Value: hatfieldd
+        - Key: Environment
+          Value: prod
+        - Key: Product
+          Value: awsgo-cache-forwarder
+        - Key: Name
+          Value: awsgo-cache-forwarder-1.0-prod
+      Environment:
+        Variables:
+          SESSION_RISKCONTROL_BYPASS: DISABLE
+          TOOL: awsgo-cache-forwarder
+          MASTER_REGION: ap-southeast-2
+      Layers:
+        - !FindInMap
+          - LambdaLayerMapping
+          - !Ref 'AWS::Region'
+          - lib1
+        - !FindInMap
+          - LambdaLayerMapping
+          - !Ref 'AWS::Region'
+          - lib2
+        - !FindInMap
+          - LambdaLayerMapping
+          - !Ref 'AWS::Region'
+          - lib3
+    DependsOn:
+      - EventforwarderLogGroup
+      - IamRoleLambdaExecution
+  LogGroupSubscriptionFilter:
+    Condition: SecondaryRegionCondition
+    Type: 'AWS::Logs::SubscriptionFilter'
+    Properties:
+      DestinationArn: !FindInMap
+        - LogDestinationMapping
+        - !Ref 'AWS::Region'
+        - arn
+      FilterPattern: '{$.type = RESULT}'
+      LogGroupName: !Ref EventforwarderLogGroup
+  AWSGoCWEventRuleRole:
+    Type: 'AWS::IAM::Role'
+    Condition: ChildAccountMasterRegionCondition
+    Properties:
+      RoleName: awsgo-cw-rule-role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: EventPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'events:PutEvents'
+                Resource:
+                  - 'arn:aws:events:ap-southeast-2:877800914193:event-bus/default'
+  AWSGoCWEventRule1SecondaryRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: SecondaryRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.ec2
+          - aws.rds
+          - aws.autoscaling
+        detail-type:
+          - EC2 Instance State-change Notification
+          - RDS DB Instance Event
+          - RDS DB Cluster Event
+          - EC2 Instance Launch Successful
+          - EC2 Instance Terminate Successful
+      State: ENABLED
+      Description: 'CloudWatch events triggering the cache update, e.g. EC2 status change'
+      Targets:
+        - Arn: !GetAtt
+            - EventforwarderLambdaFunction
+            - Arn
+          Id: event-target
+  AWSGoCWEventRule1MasterRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: ChildAccountMasterRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.ec2
+          - aws.rds
+          - aws.autoscaling
+        detail-type:
+          - EC2 Instance State-change Notification
+          - RDS DB Instance Event
+          - RDS DB Cluster Event
+          - EC2 Instance Launch Successful
+          - EC2 Instance Terminate Successful
+      State: ENABLED
+      Description: 'CloudWatch events triggering the cache update, e.g. EC2 status change'
+      Targets:
+        - Arn: 'arn:aws:events:ap-southeast-2:877800914193:event-bus/default'
+          Id: event-target
+          RoleArn: !GetAtt
+            - AWSGoCWEventRuleRole
+            - Arn
+  LambdaPermission1:
+    Condition: SecondaryRegionCondition
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt
+        - EventforwarderLambdaFunction
+        - Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt
+        - AWSGoCWEventRule1SecondaryRegion
+        - Arn
+  AWSGoCWEventRule2SecondaryRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: SecondaryRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.tag
+        detail-type:
+          - Tag Change on Resource
+        detail:
+          service:
+            - ec2
+            - rds
+          resource-type:
+            - instance
+            - db
+      State: ENABLED
+      Description: CloudWatch events about tags triggering the cache update
+      Targets:
+        - Arn: !GetAtt
+            - EventforwarderLambdaFunction
+            - Arn
+          Id: event-target
+  AWSGoCWEventRule2MasterRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: ChildAccountMasterRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.tag
+        detail-type:
+          - Tag Change on Resource
+        detail:
+          service:
+            - ec2
+            - rds
+          resource-type:
+            - instance
+            - db
+      State: ENABLED
+      Description: CloudWatch events about tags triggering the cache update
+      Targets:
+        - Arn: 'arn:aws:events:ap-southeast-2:877800914193:event-bus/default'
+          Id: event-target
+          RoleArn: !GetAtt
+            - AWSGoCWEventRuleRole
+            - Arn
+  LambdaPermission2:
+    Condition: SecondaryRegionCondition
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt
+        - EventforwarderLambdaFunction
+        - Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt
+        - AWSGoCWEventRule2SecondaryRegion
+        - Arn
+  AWSGoCWEventRule3SecondaryRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: SecondaryRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.autoscaling
+        detail-type:
+          - AWS API Call via CloudTrail
+        detail:
+          eventSource:
+            - autoscaling.amazonaws.com
+          eventName:
+            - DeleteAutoScalingGroup
+      State: ENABLED
+      Description: 'Events only caputred by CloudTrail, e.g. resource deletion'
+      Targets:
+        - Arn: !GetAtt
+            - EventforwarderLambdaFunction
+            - Arn
+          Id: event-target
+  AWSGoCWEventRule3MasterRegion:
+    Type: 'AWS::Events::Rule'
+    Condition: ChildAccountMasterRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - aws.autoscaling
+        detail-type:
+          - AWS API Call via CloudTrail
+        detail:
+          eventSource:
+            - autoscaling.amazonaws.com
+          eventName:
+            - DeleteAutoScalingGroup
+      State: ENABLED
+      Description: 'Events only caputred by CloudTrail, e.g. resource deletion'
+      Targets:
+        - Arn: 'arn:aws:events:ap-southeast-2:877800914193:event-bus/default'
+          Id: event-target
+          RoleArn: !GetAtt
+            - AWSGoCWEventRuleRole
+            - Arn
+  LambdaPermission3:
+    Condition: SecondaryRegionCondition
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt
+        - EventforwarderLambdaFunction
+        - Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt
+        - AWSGoCWEventRule3SecondaryRegion
+        - Arn
+  AWSGoCWEventRule4:
+    Type: 'AWS::Events::Rule'
+    Condition: ChildAccountMasterRegionCondition
+    Properties:
+      EventPattern:
+        source:
+          - awsgo.aws.tag
+          - awsgo.aws.ec2
+          - awsgo.aws.rds
+          - awsgo.aws.autoscaling
+      State: ENABLED
+      Description: Events forwarded from othe regions
+      Targets:
+        - Arn: 'arn:aws:events:ap-southeast-2:877800914193:event-bus/default'
+          Id: event-target
+          RoleArn: !GetAtt
+            - AWSGoCWEventRuleRole
+            - Arn
+Outputs:
+  ServerlessDeploymentBucketName:
+    Value: news-ops-serverless
+Conditions:
+  MasterRegionCondition: !Equals
+    - ap-southeast-2
+    - !Ref 'AWS::Region'
+  SecondaryRegionCondition: !Not
+    - !Condition MasterRegionCondition
+  ShareAccountCondition: !Equals
+    - '877800914193'
+    - !Ref 'AWS::AccountId'
+  ChildAccountCondition: !Not
+    - !Condition ShareAccountCondition
+  ShareAccountMasterRegionCondition: !And
+    - !Condition ShareAccountCondition
+    - !Condition MasterRegionCondition
+  ChildAccountMasterRegionCondition: !And
+    - !Condition ChildAccountCondition
+    - !Condition MasterRegionCondition
+Mappings:
+  LambdaLayerMapping:
+    ap-southeast-2:
+      lib1: 'arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_local_repos:5'
+      lib2: 'arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_comm:14'
+      lib3: 'arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_aws:15'
+      lib4: 'arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_application:5'
+    ap-southeast-1:
+      lib1: 'arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_local_repos:1'
+      lib2: 'arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_comm:1'
+      lib3: 'arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_aws:7'
+      lib4: 'arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_application:2'
+  LogDestinationMapping:
+    ap-southeast-2:
+      arn: >-
+        arn:aws:logs:ap-southeast-2:877800914193:destination:central-logging-destination
+    ap-southeast-1:
+      arn: >-
+        arn:aws:logs:ap-southeast-1:877800914193:destination:central-logging-destination

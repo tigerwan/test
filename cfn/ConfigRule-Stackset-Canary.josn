@@ -1,0 +1,77 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources" : {
+
+				"RemediationRulecrulebanksyelb":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-elb/dev/1568605986481-2019-09-16T03:53:06.481Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulesgrule":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-sg-rule/dev/1565912885482-2022-05-25T00:00:00.000Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecrulebanksyrdscluster":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-rds-cluster/dev/1568618418099-2019-09-16T07:20:18.099Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRuletaskec2scheduledchanges":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/task-ec2-scheduled-changes/dev/1567981910575-2019-09-08T22:31:50.575Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecrulebanksyec2":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-ec2/dev/1568965788632-2019-09-20T07:49:48.632Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecrulebanksyelbv2":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-elbv2/dev/1568675520775-2019-09-16T23:12:00.775Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecrulebanksyrds":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-rds/dev/1568612298424-2019-09-16T05:38:18.424Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecrulebanksyasg":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-banksy-asg/dev/1605506105644-2020-11-16T05:55:05.644Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+,
+				"RemediationRulecruleiamaccesskeyrotated":{
+				    "Type":"AWS::CloudFormation::Stack",
+				    "Properties":{
+					"TemplateURL":"https://s3-ap-southeast-2.amazonaws.com/news-ops-serverless/serverless/crule-iam-access-key-rotated/dev/1565246417886-2019-08-08T06:40:17.886Z/cloudformation-template-update-stack.json",
+					"TimeoutInMinutes":"10"
+				    }
+				}
+    }
+}

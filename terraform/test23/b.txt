@@ -1,0 +1,36 @@
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  [31m-[0m destroy
+[0m
+Terraform will perform the following actions:
+
+[1m  # aws_iam_role.daniel_test_role[0m will be [1m[31mdestroyed[0m[0m
+[0m  [31m-[0m[0m resource "aws_iam_role" "daniel_test_role" {
+      [31m-[0m [0m[1m[0marn[0m[0m                   = "arn:aws:iam::431525257644:role/daniel_test_role" [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0massume_role_policy[0m[0m    = jsonencode(
+            {
+              [31m-[0m [0mStatement = [
+                  [31m-[0m [0m{
+                      [31m-[0m [0mAction    = "sts:AssumeRole"
+                      [31m-[0m [0mEffect    = "Allow"
+                      [31m-[0m [0mPrincipal = {
+                          [31m-[0m [0mService = "events.amazonaws.com"
+                        }
+                      [31m-[0m [0mSid       = ""
+                    },
+                ]
+              [31m-[0m [0mVersion   = "2012-10-17"
+            }
+        ) [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mcreate_date[0m[0m           = "2020-10-21T00:45:35Z" [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mforce_detach_policies[0m[0m = false [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mid[0m[0m                    = "daniel_test_role" [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mmax_session_duration[0m[0m  = 3600 [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mname[0m[0m                  = "daniel_test_role" [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mpath[0m[0m                  = "/" [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0mtags[0m[0m                  = {} [90m->[0m [0m[90mnull[0m[0m
+      [31m-[0m [0m[1m[0munique_id[0m[0m             = "AROAWI6HI4GWHXPIYO47R" [90m->[0m [0m[90mnull[0m[0m
+    }
+
+[0m[1mPlan:[0m 0 to add, 0 to change, 1 to destroy.[0m

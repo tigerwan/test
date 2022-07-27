@@ -1,0 +1,187 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "EKS Managed Nodes (SSH access: false) [created by eksctl]",
+  "Mappings": {
+    "ServicePrincipalPartitionMap": {
+      "aws": {
+        "EC2": "ec2.amazonaws.com",
+        "EKS": "eks.amazonaws.com",
+        "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+      },
+      "aws-cn": {
+        "EC2": "ec2.amazonaws.com.cn",
+        "EKS": "eks.amazonaws.com",
+        "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+      },
+      "aws-us-gov": {
+        "EC2": "ec2.amazonaws.com",
+        "EKS": "eks.amazonaws.com",
+        "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+      }
+    }
+  },
+  "Resources": {
+    "LaunchTemplate": {
+      "Type": "AWS::EC2::LaunchTemplate",
+      "Properties": {
+        "LaunchTemplateData": {
+          "BlockDeviceMappings": [
+            {
+              "DeviceName": "/dev/xvda",
+              "Ebs": {
+                "Iops": 3000,
+                "Throughput": 125,
+                "VolumeSize": 80,
+                "VolumeType": "gp3"
+              }
+            }
+          ],
+          "MetadataOptions": {
+            "HttpPutResponseHopLimit": 2,
+            "HttpTokens": "optional"
+          },
+          "SecurityGroupIds": [
+            {
+              "Fn::ImportValue": "eksctl-daniel-eksctl-eks-cluster::ClusterSecurityGroupId"
+            }
+          ],
+          "TagSpecifications": [
+            {
+              "ResourceType": "instance",
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "daniel-eksctl-eks-nodegroup-Node"
+                },
+                {
+                  "Key": "alpha.eksctl.io/nodegroup-name",
+                  "Value": "nodegroup"
+                },
+                {
+                  "Key": "alpha.eksctl.io/nodegroup-type",
+                  "Value": "managed"
+                }
+              ]
+            },
+            {
+              "ResourceType": "volume",
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "daniel-eksctl-eks-nodegroup-Node"
+                },
+                {
+                  "Key": "alpha.eksctl.io/nodegroup-name",
+                  "Value": "nodegroup"
+                },
+                {
+                  "Key": "alpha.eksctl.io/nodegroup-type",
+                  "Value": "managed"
+                }
+              ]
+            }
+          ],
+          "UserData": "TUlNRS1WZXJzaW9uOiAxLjANCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT0yMTNkOGI1MjBmZjc3MGViMDQ2ZDM4ZDI2MzMxMjIzODQ2MjAxNjViZmM4NDkxODdhYTRhYTRjYjdhODENCg0KLS0yMTNkOGI1MjBmZjc3MGViMDQ2ZDM4ZDI2MzMxMjIzODQ2MjAxNjViZmM4NDkxODdhYTRhYTRjYjdhODENCkNvbnRlbnQtVHlwZTogdGV4dC94LXNoZWxsc2NyaXB0DQpDb250ZW50LVR5cGU6IGNoYXJzZXQ9InVzLWFzY2lpIg0KDQojIS9iaW4vYmFzaAoKc2V0IC1vIGVycmV4aXQKc2V0IC1vIHBpcGVmYWlsCnNldCAtbyBub3Vuc2V0Cgp5dW0gaW5zdGFsbCAteSBhbWF6b24tc3NtLWFnZW50CnN5c3RlbWN0bCBlbmFibGUgYW1hem9uLXNzbS1hZ2VudApzeXN0ZW1jdGwgc3RhcnQgYW1hem9uLXNzbS1hZ2VudAoNCi0tMjEzZDhiNTIwZmY3NzBlYjA0NmQzOGQyNjMzMTIyMzg0NjIwMTY1YmZjODQ5MTg3YWE0YWE0Y2I3YTgxLS0NCg=="
+        },
+        "LaunchTemplateName": {
+          "Fn::Sub": "${AWS::StackName}"
+        }
+      }
+    },
+    "ManagedNodeGroup": {
+      "Type": "AWS::EKS::Nodegroup",
+      "Properties": {
+        "AmiType": "AL2_x86_64",
+        "ClusterName": "daniel-eksctl-eks",
+        "InstanceTypes": [
+          "t3.small"
+        ],
+        "Labels": {
+          "alpha.eksctl.io/cluster-name": "daniel-eksctl-eks",
+          "alpha.eksctl.io/nodegroup-name": "nodegroup"
+        },
+        "LaunchTemplate": {
+          "Id": {
+            "Ref": "LaunchTemplate"
+          }
+        },
+        "NodeRole": {
+          "Fn::GetAtt": [
+            "NodeInstanceRole",
+            "Arn"
+          ]
+        },
+        "NodegroupName": "nodegroup",
+        "ScalingConfig": {
+          "DesiredSize": 1,
+          "MaxSize": 1,
+          "MinSize": 1
+        },
+        "Subnets": {
+          "Fn::Split": [
+            ",",
+            {
+              "Fn::ImportValue": "eksctl-daniel-eksctl-eks-cluster::SubnetsPublic"
+            }
+          ]
+        },
+        "Tags": {
+          "alpha.eksctl.io/nodegroup-name": "nodegroup",
+          "alpha.eksctl.io/nodegroup-type": "managed"
+        }
+      }
+    },
+    "NodeInstanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sts:AssumeRole"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  {
+                    "Fn::FindInMap": [
+                      "ServicePrincipalPartitionMap",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      "EC2"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+          },
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+          },
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
+          },
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+          }
+        ],
+        "Path": "/",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Sub": "${AWS::StackName}/NodeInstanceRole"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

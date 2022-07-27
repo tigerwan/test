@@ -1,0 +1,45 @@
+("response:{'DBClusters': [{'AllocatedStorage': 1, 'AvailabilityZones': "
+ "['ap-southeast-2a', 'ap-southeast-2b', 'ap-southeast-2c'], "
+ "'BackupRetentionPeriod': 7, 'DBClusterIdentifier': 'nct-nie-aurora-cluster', "
+ "'DBClusterParameterGroup': 'nct-nie-db-cluster-parameter-group', "
+ "'DBSubnetGroup': 'nct-nie-aurora-cluster', 'Status': 'available', "
+ "'EarliestRestorableTime': datetime.datetime(2022, 4, 28, 16, 30, 46, 897000, "
+ "tzinfo=tzutc()), 'Endpoint': "
+ "'nct-nie-aurora-cluster.cluster-czucoyrwwbrj.ap-southeast-2.rds.amazonaws.com', "
+ "'MultiAZ': False, 'Engine': 'aurora-mysql', 'EngineVersion': "
+ "'5.7.mysql_aurora.2.07.1', 'LatestRestorableTime': datetime.datetime(2022, "
+ "5, 6, 1, 11, 53, 419000, tzinfo=tzutc()), 'Port': 3306, 'MasterUsername': "
+ "'clusterAdmin', 'PreferredBackupWindow': '16:20-16:50', "
+ "'PreferredMaintenanceWindow': 'thu:15:17-thu:15:47', "
+ "'ReadReplicaIdentifiers': [], 'DBClusterMembers': [], 'VpcSecurityGroups': "
+ "[{'VpcSecurityGroupId': 'sg-05030afb089747922', 'Status': 'active'}, "
+ "{'VpcSecurityGroupId': 'sg-06400f2a6628cbc42', 'Status': 'active'}], "
+ "'HostedZoneId': 'Z32T0VRHXEXS0V', 'StorageEncrypted': True, 'KmsKeyId': "
+ "'arn:aws:kms:ap-southeast-2:894695242608:key/d6407f04-0533-4f42-8070-7c30304aa444', "
+ "'DbClusterResourceId': 'cluster-BQNQIVDIMOORPLAGD25KT52OJM', 'DBClusterArn': "
+ "'arn:aws:rds:ap-southeast-2:894695242608:cluster:nct-nie-aurora-cluster', "
+ "'AssociatedRoles': [], 'IAMDatabaseAuthenticationEnabled': False, "
+ "'ClusterCreateTime': datetime.datetime(2021, 10, 20, 4, 25, 57, 962000, "
+ "tzinfo=tzutc()), 'Capacity': 1, 'EngineMode': 'serverless', "
+ "'ScalingConfigurationInfo': {'MinCapacity': 1, 'MaxCapacity': 2, "
+ "'AutoPause': True, 'SecondsUntilAutoPause': 300, 'TimeoutAction': "
+ "'ForceApplyCapacityChange', 'SecondsBeforeTimeout': 300}, "
+ "'DeletionProtection': False, 'HttpEndpointEnabled': True, "
+ "'ActivityStreamStatus': 'stopped', 'CopyTagsToSnapshot': False, "
+ "'CrossAccountClone': False, 'DomainMemberships': [], 'TagList': [{'Key': "
+ "'owner', 'Value': 'gareth.mcshane@news.com.au'}, {'Key': 'name', 'Value': "
+ "'nct-nie-aurora-cluster'}, {'Key': 'environment', 'Value': 'dev'}, {'Key': "
+ "'product', 'Value': 'poc'}, {'Key': 'company', 'Value': 'nct'}, {'Key': "
+ "'business', 'Value': 'nie'}]}], 'ResponseMetadata': {'RequestId': "
+ "'5dab01b9-44c8-469f-9c79-0c1d9dd4c56a', 'HTTPStatusCode': 200, "
+ "'HTTPHeaders': {'x-amzn-requestid': '5dab01b9-44c8-469f-9c79-0c1d9dd4c56a', "
+ "'content-type': 'text/xml', 'content-length': '4254', 'date': 'Fri, 06 May "
+ "2022 01:16:42 GMT'}, 'RetryAttempts': 0}}")
+Traceback (most recent call last):
+  File "/Users/wand/Work/test/aws/rds/test2.py", line 11, in <module>
+    response = client.stop_db_cluster(
+  File "/usr/local/lib/python3.9/site-packages/botocore/client.py", line 386, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+  File "/usr/local/lib/python3.9/site-packages/botocore/client.py", line 705, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.errorfactory.InvalidDBClusterStateFault: An error occurred (InvalidDBClusterStateFault) when calling the StopDBCluster operation: Stop-db-cluster is not supported for these configurations

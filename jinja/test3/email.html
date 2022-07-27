@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .terrafrom_plan{
+            font-style: italic;
+            text-indent:2em;
+        }
+        .terrafrom_plan .to_add{
+            color: rgb(0, 255, 0);
+        }
+        .terrafrom_plan .to_update{
+            color: rgb(255, 191, 0);
+        }
+        .terrafrom_plan .to_delete{
+            color: rgb(255, 0, 0);
+        }
+        .terrafrom_plan .resource_name{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <p>Hi,
+    <br>
+    <br>
+    Here is the terraform plan output. The pipeline is going to roll it out to the infrasutructure. If you have any concern, please abort the pipeline in 30 minutes.
+    <!-- Here is terraform plan output -->
+    <div class="terrafrom_plan">
+    
+        <div>An execution plan has been generated and is shown below.</div>
+        <div>Resource actions are indicated with the following symbols:</div>
+        <div class="to_update">&ensp;~ update in-place</div>
+        <div>Terraform will perform the following actions:</div>
+        <div class="resource_name">&ensp;# aws_iam_role.terraform_test_role will be updated in-place</div>
+        <div class="to_update">&ensp;~ resource "aws_iam_role" "terraform_test_role" {</div>
+        <div>&ensp;&ensp;&ensp;&ensp;arn&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; = "arn:aws:iam::431525257644:role/terraform-20200619071301334700000001"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;assume_role_policy&ensp;&ensp;= jsonencode(</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Statement = [</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Action&ensp;&ensp;= "sts:AssumeRole"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Effect&ensp;&ensp;= "Allow"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Principal = {</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Service = "ec2.amazonaws.com"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Sid&ensp;&ensp;&ensp; = ""</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;},</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;]</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Version&ensp; = "2012-10-17"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}</div>
+        <div>&ensp;&ensp;&ensp;&ensp;)</div>
+        <div>&ensp;&ensp;&ensp;&ensp;create_date&ensp;&ensp;&ensp;&ensp;&ensp; = "2020-06-19T07:13:02Z"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;force_detach_policies = false</div>
+        <div>&ensp;&ensp;&ensp;&ensp;id&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;= "terraform-20200619071301334700000001"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;max_session_duration&ensp;= 3600</div>
+        <div>&ensp;&ensp;&ensp;&ensp;name&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;= "terraform-20200619071301334700000001"</div>
+        <div>&ensp;&ensp;&ensp;&ensp;path&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;= "/"</div>
+        <div class="to_update">&ensp;&ensp;&ensp;~ tags&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;= {</div>
+        
+            <div class="to_add">&ensp;&ensp;&ensp;&ensp;&ensp;+ "environment" = "dev"</div>
+        <div class="to_update">&ensp;&ensp;&ensp;&ensp;&ensp;~ "name"&ensp;&ensp;&ensp;&ensp;= "test-role" -> "test-role-modified"</div>
+        <div class="to_delete">&ensp;&ensp;&ensp;&ensp;&ensp;- "test"&ensp;&ensp;&ensp;&ensp;= "yes" -> null</div>
+        <div>&ensp;&ensp;&ensp;&ensp;}</div>
+        <div>&ensp;&ensp;&ensp;&ensp;unique_id&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; = "AROAWI6HI4GWDRBV35TM7"</div>
+        <div>&ensp;&ensp;}</div>
+        <div>Plan: 0 to add, 1 to change, 0 to destroy.</div>
+    </div>
+    <br>
+    Regards
+    <br>
+    Operation team
+    </p>
+    </body>
+</html>

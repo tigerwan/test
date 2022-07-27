@@ -1,0 +1,42 @@
+Summary of the change:
+
+VPC builder is tweaked to address 2 new customization demands:
+
+* The user may want to use fewer AZs than all available AZs in the region, e.g. Sydney region has 3 AZs but the user only wants to use 2 AZs only.
+
+* The user may want to use the non-standard subnet CIDR as the fewer or more hosts to build than the standard subnet size.
+
+The main changes are the new version offers the following variables for subnet size customization, then cacluate all subnets' CIDR in the fly accordly and associate with corresponding AZs, afterwards, walk through AZs and create subnets via the module called "az_build"
+
+* "v_az_number" for the number of AZs to build subnets and associated resources
+* "v_private_subnet_netmask", "v_public_subnet_netmask", "v_protect_subnet_netmask" for private, public and protect subnets netmask in slack convention, e.g. /24
+
+Given the VPC is 172.29.0.0/21, region is ap-southeast-2,  private subnet is /24, public and protect are /25, the work out of subents CIDR would be like below
+
+private1: 172.29.0.0/24   (AZ: ap-southeast-2a)
+private2: 172.29.1.0/24   (AZ: ap-southeast-2b)
+prirvate3: 172.29.2.0/24  (AZ: ap-southeast-2c)
+
+public1: 172.29.3.0/25    (AZ: ap-southeast-2a)
+public2: 172.29.3.128/25  (AZ: ap-southeast-2b)
+public3: 172.29.4.0/25    (AZ: ap-southeast-2c)
+
+protect1: 172.29.4.128/25 (AZ: ap-southeast-2a)
+protect2: 172.29.5.0/25   (AZ: ap-southeast-2b)
+protect3: 172.29.5.128/25 (AZ: ap-southeast-2c)
+
+The current algorithm is based on the following presummption
+* private subents CIDR goes first, then public subnet, and the last is proect subnents
+* similar to AZ, AZ a is the first one to assoicate, then b, c, d, etc in squenece
+* private CIDR >= public CIDR >= protect CIDR
+
+
+Please note the following limits
+* Due to no spare ip range among any subnets, no way to extend the subnet size
+* After subnets are built in AZs, any exention to more AZs or shrink to fewer AZs is not supported as it may lead to Terraform failure because any subnet change would lead to CIDR re-calcuated and re-allocated, and new subnet CIDRs conflit with the existing ones.
+
+
+By now, there are couploe things waitting for Archtect team feedback:
+* private, public, preect subnet's NCAL
+* 1. private, public, preect subnet's routing
+

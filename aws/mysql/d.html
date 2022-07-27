@@ -1,0 +1,25 @@
+English follows Japanese
+
+いつもお世話になっております。
+
+お客様のアカウントが AP-NORTHEAST-1 リージョンの EC2-Classic リソースを使用していないことが確認されました。2021 年 7 月の以前の連絡でお伝えしました通り、このアカウントの AP-NORTHEAST-1リージョンにおける EC2-Classic の使用を無効にしました。既存の EC2-Classic ワークフローとの後方互換性を確保するために、お客様のアカウントではデフォルト VPC が AP-NORTHEAST-1 リージョンに作成されています。新しく作成されたデフォルト VPC は [影響を受けるリソース] (Affected resources) タブに記載しております。EC2-Classic で AWS リソースを起動するために使用していたワークフローは引き続き機能し、このデフォルト VPC にそれらのリソースを作成します。
+
+デフォルト VPC は、アカウント作成の一部として自動的に作成される他の AWS オブジェクトと同じ動作に従います。デフォルト VPC の詳細については [1] をご参照ください。このデフォルト VPC を使用したくない場合は、他の VPC と同様に安全に削除できます。VPC を削除する方法の詳細については [2] をご参照ください。
+
+ご質問やご不明な点がある場合は、AWS サポート [3] までお問い合わせください。
+
+[1] <a href="https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html">https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html</a>
+[2] <a href="https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html#VPC_Deleting">https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html#VPC_Deleting</a>
+[3] <a href="https://aws.amazon.com/support">https://aws.amazon.com/support</a>
+
+---
+
+We have identified that your account is not using any EC2-Classic resources in the AP-NORTHEAST-1 Region. As a follow-up to our earlier communication in July 2021, we have disabled any further use of EC2-Classic for this account in the AP-NORTHEAST-1 Region. A default VPC has been created in the AP-NORTHEAST-1 Region for your account to ensure backwards-compatibility with any of your existing EC2-Classic workflows. The newly created default VPC is listed in the "Affected resources" tab. The workflows that you used to launch AWS resources in EC2-Classic will continue to function and create those resources in this default VPC. 
+
+Default VPCs follow the same behavior as any other AWS object that is automatically created as part of your account creation. For more information on default VPC [1]. If you do not wish to have this Default VPC you can safely delete it like any other VPC. For more information on how to delete your VPC [2]. 
+
+If you have any questions, please contact AWS support [3].
+
+[1] <a href="https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html">https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html</a>
+[2] <a href="https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html#VPC_Deleting">https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html#VPC_Deleting</a>
+[3] <a href="https://aws.amazon.com/support">https://aws.amazon.com/support</a>

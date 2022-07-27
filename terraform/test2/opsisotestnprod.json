@@ -1,0 +1,111 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.26",
+  "serial": 8,
+  "lineage": "e5a7ec6c-6c34-e812-0d79-6af58422ee62",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "target_account_policy",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::779494810438:policy/terraform-lz-accountManagement-policy",
+            "description": "Allows Terraform to manage the account",
+            "id": "arn:aws:iam::779494810438:policy/terraform-lz-accountManagement-policy",
+            "name": "terraform-lz-accountManagement-policy",
+            "name_prefix": null,
+            "path": "/",
+            "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Action\": [\n        \"*\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.target_account_role",
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "target_account_role",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::779494810438:role/terraform-lz-accountConfiguration-role",
+            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"allowTerraformToAssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::877800914193:root\"},\"Action\":\"sts:AssumeRole\"}]}",
+            "create_date": "2020-06-17T04:00:32Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "terraform-lz-accountConfiguration-role",
+            "max_session_duration": 3600,
+            "name": "terraform-lz-accountConfiguration-role",
+            "name_prefix": null,
+            "path": "/",
+            "permissions_boundary": null,
+            "tags": null,
+            "unique_id": "AROA3K7MC4NDA74QWLEVB"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "target_account_attachment",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "terraform-lz-accountConfiguration-role-20200617040036876000000001",
+            "policy_arn": "arn:aws:iam::779494810438:policy/terraform-lz-accountManagement-policy",
+            "role": "terraform-lz-accountConfiguration-role"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_policy.target_account_policy",
+            "aws_iam_role.target_account_role",
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_organizations_account",
+      "name": "account",
+      "provider": "provider.aws.masterOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:organizations::257337402470:account/o-qc789kj4jy/779494810438",
+            "email": "newsawsaccounts+ops-isolated-test@news.com.au",
+            "iam_user_access_to_billing": null,
+            "id": "779494810438",
+            "joined_method": "CREATED",
+            "joined_timestamp": "2020-01-14T03:30:27Z",
+            "name": "OPSISOTESTNPROD",
+            "parent_id": "r-ec9k",
+            "role_name": null,
+            "status": "ACTIVE",
+            "tags": {}
+          },
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
+        }
+      ]
+    }
+  ]
+}

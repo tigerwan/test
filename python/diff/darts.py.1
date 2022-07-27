@@ -1,0 +1,74 @@
+import copy
+from lzma import FILTER_LZMA2
+
+
+def discover_shortest_path(outstanding_score, path, shortest_path_length):
+
+    print("input:{};{};{}".format(outstanding_score, path, shortest_path_length))
+
+    if outstanding_score == 0:
+        return [path]
+
+    if len(path) > shortest_path_length:
+        return []
+
+    paths = []
+
+    for base_score in [50, 25, 3, 2, 1]:
+
+        count = outstanding_score // base_score
+
+        print("{} // {} = {}".format(outstanding_score, base_score, count))
+        if count < 1:
+            continue
+        if base_score in [50, 25]:
+            count = min(1, count)
+            description = "bull" if base_score == 50 else "outer"
+            path.append({"score": base_score, "name": description})
+        else:
+            count = min(20, count)
+            prefix = "s"
+            if base_score == 3:
+                prefix = "t"
+            elif base_score == 2:
+                prefix = "d"
+            path.append({"score": base_score * count, "name": prefix + str(count)})
+
+        child_paths = discover_shortest_path(
+            outstanding_score - base_score * count,
+            path,
+            shortest_path_length,
+        )
+        print("child_paths:{}".format(child_paths))
+        for p in child_paths:
+            path_length = len(p)
+            if path_length < shortest_path_length and path_length > 0:
+                shortest_path_length = len(p)
+            if path_length <= shortest_path_length:
+                paths.append(sorted(p, key=lambda x: x["score"], reverse=True))
+
+        path.pop()
+
+    print("paths:{}".format(paths))
+    return paths
+
+
+def find_min_throws(score):
+
+    throws = discover_shortest_path(score, [], 99999999)
+    min_length = min([len(t) for t in throws])
+
+    filter1 = [t for t in throws if len(t) == min_length]
+    print("filter1:{}".format(filter1))
+
+    filter2 = sorted(filter1, key=lambda x: x[0]["score"], reverse=True)
+    print("filter2:{}".format(filter2))
+
+    filter3 = [item["name"] for item in filter2[0]]
+    print("filter3:{}".format(filter3))
+
+    return filter3
+
+
+if __name__ == "__main__":
+    print(find_min_throws(161))

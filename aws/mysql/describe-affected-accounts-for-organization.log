@@ -1,0 +1,85 @@
+2022-02-07 18:38:36,479 - MainThread - awscli.clidriver - DEBUG - CLI version: aws-cli/2.0.2 Python/3.7.4 Darwin/19.6.0 botocore/2.0.0dev6
+2022-02-07 18:38:36,479 - MainThread - awscli.clidriver - DEBUG - Arguments entered to CLI: ['health', 'describe-affected-accounts-for-organization', '--event-arn', 'arn:aws:health:ap-southeast-2::event/VPN/AWS_VPN_REDUNDANCY_LOSS/AWS_VPN_REDUNDANCY_LOSS-1636284743386-1037766-SYD', '--region', 'us-east-1', '--debug']
+2022-02-07 18:38:36,480 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function add_timestamp_parser at 0x7fef9bf89cb0>
+2022-02-07 18:38:36,480 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function register_uri_param_handler at 0x7fef9b775dd0>
+2022-02-07 18:38:36,480 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function add_binary_formatter at 0x7fef9bfdb5f0>
+2022-02-07 18:38:36,481 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function inject_assume_role_provider_cache at 0x7fef9b7a1c20>
+2022-02-07 18:38:36,489 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function attach_history_handler at 0x7fef9bd00dd0>
+2022-02-07 18:38:36,489 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function inject_json_file_cache at 0x7fef9bca3b00>
+2022-02-07 18:38:36,509 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/botocore/data/health/2016-08-04/service-2.json
+2022-02-07 18:38:36,512 - MainThread - botocore.hooks - DEBUG - Event building-command-table.health: calling handler <function add_waiters at 0x7fef9bf9a8c0>
+2022-02-07 18:38:36,532 - MainThread - awscli.clidriver - DEBUG - OrderedDict([('event-arn', <awscli.arguments.CLIArgument object at 0x7fef9d1d7390>), ('next-token', <awscli.arguments.CLIArgument object at 0x7fef9d1d7850>), ('max-results', <awscli.arguments.CLIArgument object at 0x7fef9d1d7950>)])
+2022-02-07 18:38:36,532 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function add_streaming_output_arg at 0x7fef9bf8fe60>
+2022-02-07 18:38:36,532 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function add_cli_input_json at 0x7fef9b7a9e60>
+2022-02-07 18:38:36,533 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function add_cli_input_yaml at 0x7fef9b7a9680>
+2022-02-07 18:38:36,533 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function unify_paging_params at 0x7fef9bcc20e0>
+2022-02-07 18:38:36,552 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/botocore/data/health/2016-08-04/paginators-1.json
+2022-02-07 18:38:36,552 - MainThread - awscli.customizations.paginate - DEBUG - Modifying paging parameters for operation: DescribeAffectedAccountsForOrganization
+2022-02-07 18:38:36,553 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function add_generate_skeleton at 0x7fef9bdacdd0>
+2022-02-07 18:38:36,553 - MainThread - botocore.hooks - DEBUG - Event building-argument-table.health.describe-affected-accounts-for-organization: calling handler <function add_auto_prompt at 0x7fef9bfd67a0>
+2022-02-07 18:38:36,553 - MainThread - botocore.hooks - DEBUG - Event before-building-argument-table-parser.health.describe-affected-accounts-for-organization: calling handler <bound method OverrideRequiredArgsArgument.override_required_args of <awscli.customizations.cliinput.CliInputJSONArgument object at 0x7fef9d1d7890>>
+2022-02-07 18:38:36,554 - MainThread - botocore.hooks - DEBUG - Event before-building-argument-table-parser.health.describe-affected-accounts-for-organization: calling handler <bound method OverrideRequiredArgsArgument.override_required_args of <awscli.customizations.cliinput.CliInputYAMLArgument object at 0x7fef9d1d7450>>
+2022-02-07 18:38:36,554 - MainThread - botocore.hooks - DEBUG - Event before-building-argument-table-parser.health.describe-affected-accounts-for-organization: calling handler <bound method GenerateCliSkeletonArgument.override_required_args of <awscli.customizations.generatecliskeleton.GenerateCliSkeletonArgument object at 0x7fef9d1e4790>>
+2022-02-07 18:38:36,554 - MainThread - botocore.hooks - DEBUG - Event before-building-argument-table-parser.health.describe-affected-accounts-for-organization: calling handler <bound method AutoPromptArgument.override_required_args of <awscli.customizations.autoprompt.AutoPromptArgument object at 0x7fef9d1e4690>>
+2022-02-07 18:38:36,555 - MainThread - botocore.hooks - DEBUG - Event operation-args-parsed.health.describe-affected-accounts-for-organization: calling handler functools.partial(<function check_should_enable_pagination at 0x7fef9bcc2200>, ['next-token', 'max-results'], {}, OrderedDict([('event-arn', <awscli.arguments.CLIArgument object at 0x7fef9d1d7390>), ('next-token', <awscli.arguments.CLIArgument object at 0x7fef9d1d7850>), ('max-results', <awscli.arguments.CLIArgument object at 0x7fef9d1d7950>), ('cli-input-json', <awscli.customizations.cliinput.CliInputJSONArgument object at 0x7fef9d1d7890>), ('cli-input-yaml', <awscli.customizations.cliinput.CliInputYAMLArgument object at 0x7fef9d1d7450>), ('starting-token', <awscli.customizations.paginate.PageArgument object at 0x7fef9d1dacd0>), ('page-size', <awscli.customizations.paginate.PageArgument object at 0x7fef9d1611d0>), ('max-items', <awscli.customizations.paginate.PageArgument object at 0x7fef9d1e44d0>), ('generate-cli-skeleton', <awscli.customizations.generatecliskeleton.GenerateCliSkeletonArgument object at 0x7fef9d1e4790>), ('cli-auto-prompt', <awscli.customizations.autoprompt.AutoPromptArgument object at 0x7fef9d1e4690>)]))
+2022-02-07 18:38:36,555 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.event-arn: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,555 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.health.describe-affected-accounts-for-organization: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fef9aff5710>
+2022-02-07 18:38:36,556 - MainThread - awscli.arguments - DEBUG - Unpacked value of 'arn:aws:health:ap-southeast-2::event/VPN/AWS_VPN_REDUNDANCY_LOSS/AWS_VPN_REDUNDANCY_LOSS-1636284743386-1037766-SYD' for parameter "event_arn": 'arn:aws:health:ap-southeast-2::event/VPN/AWS_VPN_REDUNDANCY_LOSS/AWS_VPN_REDUNDANCY_LOSS-1636284743386-1037766-SYD'
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.next-token: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.max-results: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.cli-input-json: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.cli-input-yaml: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.starting-token: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.page-size: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,556 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.max-items: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.generate-cli-skeleton: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.health.describe-affected-accounts-for-organization.cli-auto-prompt: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fef9d161850>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event calling-command.health.describe-affected-accounts-for-organization: calling handler <bound method CliInputArgument.add_to_call_parameters of <awscli.customizations.cliinput.CliInputJSONArgument object at 0x7fef9d1d7890>>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event calling-command.health.describe-affected-accounts-for-organization: calling handler <bound method CliInputArgument.add_to_call_parameters of <awscli.customizations.cliinput.CliInputYAMLArgument object at 0x7fef9d1d7450>>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event calling-command.health.describe-affected-accounts-for-organization: calling handler <bound method GenerateCliSkeletonArgument.generate_skeleton of <awscli.customizations.generatecliskeleton.GenerateCliSkeletonArgument object at 0x7fef9d1e4790>>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event calling-command.health.describe-affected-accounts-for-organization: calling handler <bound method AutoPromptArgument.auto_prompt_arguments of <awscli.customizations.autoprompt.AutoPromptArgument object at 0x7fef9d1e4690>>
+2022-02-07 18:38:36,557 - MainThread - botocore.hooks - DEBUG - Event calling-command.health.describe-affected-accounts-for-organization: calling handler functools.partial(<function check_should_enable_pagination_call_parameters at 0x7fef9bcc25f0>, ['nextToken', 'maxResults'])
+2022-02-07 18:38:36,557 - MainThread - botocore.credentials - DEBUG - Looking for credentials via: env
+2022-02-07 18:38:36,558 - MainThread - botocore.credentials - INFO - Found credentials in environment variables.
+2022-02-07 18:38:36,559 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/botocore/data/endpoints.json
+2022-02-07 18:38:36,565 - MainThread - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x7fef9ae92200>
+2022-02-07 18:38:36,566 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.health: calling handler <function add_generate_presigned_url at 0x7fef9ae3cef0>
+2022-02-07 18:38:36,590 - MainThread - botocore.endpoint - DEBUG - Setting health timeout as (60, 60)
+2022-02-07 18:38:36,592 - MainThread - botocore.hooks - DEBUG - Event provide-client-params.health.DescribeAffectedAccountsForOrganization: calling handler <function base64_decode_input_blobs at 0x7fef9bfdb680>
+2022-02-07 18:38:36,593 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.health.DescribeAffectedAccountsForOrganization: calling handler <function generate_idempotent_uuid at 0x7fef9ae95e60>
+2022-02-07 18:38:36,593 - MainThread - botocore.hooks - DEBUG - Event before-call.health.DescribeAffectedAccountsForOrganization: calling handler <function inject_api_version_header_if_needed at 0x7fef9ae9a950>
+2022-02-07 18:38:36,593 - MainThread - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeAffectedAccountsForOrganization) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'X-Amz-Target': 'AWSHealth_20160804.DescribeAffectedAccountsForOrganization', 'Content-Type': 'application/x-amz-json-1.1', 'User-Agent': 'aws-cli/2.0.2 Python/3.7.4 Darwin/19.6.0 botocore/2.0.0dev6'}, 'body': b'{"eventArn": "arn:aws:health:ap-southeast-2::event/VPN/AWS_VPN_REDUNDANCY_LOSS/AWS_VPN_REDUNDANCY_LOSS-1636284743386-1037766-SYD"}', 'url': 'https://health.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7fef9d39f050>, 'has_streaming_input': False, 'auth_type': None}}
+2022-02-07 18:38:36,593 - MainThread - botocore.hooks - DEBUG - Event request-created.health.DescribeAffectedAccountsForOrganization: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7fef9d39f0d0>>
+2022-02-07 18:38:36,593 - MainThread - botocore.hooks - DEBUG - Event choose-signer.health.DescribeAffectedAccountsForOrganization: calling handler <function set_operation_specific_signer at 0x7fef9ae88ef0>
+2022-02-07 18:38:36,594 - MainThread - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2022-02-07 18:38:36,594 - MainThread - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-amz-json-1.1
+host:health.us-east-1.amazonaws.com
+x-amz-date:20220207T073836Z
+x-amz-security-token:FwoGZXIvYXdzEKn//////////wEaDINeKf7UCuKzy6Y3PSLwAeblzCzBhYyPcw1n/tItFqsYczpJLASPbS6+2oQVx2RYn8s/rFul9Mx2q1J9VIm3f3jV4ZSBXKB0otqrwDE1IpY/Ah19r/t1FtXkWuariCF4YxI7lOdkqgxmpMuJ8LVmCbKyw7hJ1r/qbCTiN3od5+Y/v3iP06rb+GwXC+vgYS7XKEfe01eiW5comNFQvGMascg4P2G1iBSAjW/GhiSu0/vE7Wbh6bXEKMXNZuYSV4sFdtgOA31jYxnvKX44M+r/MfRSC+lgjxf7rQXr0qhftCtm4SWYkCP3qMD0GSlScAS0RwoON0wPaVm2GPLk44rEdyiwi4OQBjIrqNr0VV/euZxngCWVR64no3lbbfCQaMC0jt9tEgE3riiKGBezYsUD0Z5e6g==
+x-amz-target:AWSHealth_20160804.DescribeAffectedAccountsForOrganization
+
+content-type;host;x-amz-date;x-amz-security-token;x-amz-target
+cf62f048a62479f5fd11d22f6ac15ee18c5a4aa21a4295c23723be7869725eba
+2022-02-07 18:38:36,594 - MainThread - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20220207T073836Z
+20220207/us-east-1/health/aws4_request
+a7b5e7ba61ad0f10795c0d03275a7ed0eff02b33222eeb6962e03ea38b96fa48
+2022-02-07 18:38:36,594 - MainThread - botocore.auth - DEBUG - Signature:
+e5db6dbd244c54db75f846d7ada384ace6ec8d66cdaf43284334a25a4c42d15b
+2022-02-07 18:38:36,595 - MainThread - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://health.us-east-1.amazonaws.com/, headers={'X-Amz-Target': b'AWSHealth_20160804.DescribeAffectedAccountsForOrganization', 'Content-Type': b'application/x-amz-json-1.1', 'User-Agent': b'aws-cli/2.0.2 Python/3.7.4 Darwin/19.6.0 botocore/2.0.0dev6', 'X-Amz-Date': b'20220207T073836Z', 'X-Amz-Security-Token': b'FwoGZXIvYXdzEKn//////////wEaDINeKf7UCuKzy6Y3PSLwAeblzCzBhYyPcw1n/tItFqsYczpJLASPbS6+2oQVx2RYn8s/rFul9Mx2q1J9VIm3f3jV4ZSBXKB0otqrwDE1IpY/Ah19r/t1FtXkWuariCF4YxI7lOdkqgxmpMuJ8LVmCbKyw7hJ1r/qbCTiN3od5+Y/v3iP06rb+GwXC+vgYS7XKEfe01eiW5comNFQvGMascg4P2G1iBSAjW/GhiSu0/vE7Wbh6bXEKMXNZuYSV4sFdtgOA31jYxnvKX44M+r/MfRSC+lgjxf7rQXr0qhftCtm4SWYkCP3qMD0GSlScAS0RwoON0wPaVm2GPLk44rEdyiwi4OQBjIrqNr0VV/euZxngCWVR64no3lbbfCQaMC0jt9tEgE3riiKGBezYsUD0Z5e6g==', 'Authorization': b'AWS4-HMAC-SHA256 Credential=ASIATX2UBERTGMUHIYMS/20220207/us-east-1/health/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token;x-amz-target, Signature=e5db6dbd244c54db75f846d7ada384ace6ec8d66cdaf43284334a25a4c42d15b', 'Content-Length': '130'}>
+2022-02-07 18:38:36,595 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): health.us-east-1.amazonaws.com:443
+2022-02-07 18:38:37,592 - MainThread - urllib3.connectionpool - DEBUG - https://health.us-east-1.amazonaws.com:443 "POST / HTTP/1.1" 200 47
+2022-02-07 18:38:37,593 - MainThread - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '095c68ca-edd4-4e3f-bf42-9b2613de151b', 'Content-Type': 'application/x-amz-json-1.1', 'Content-Length': '47', 'Date': 'Mon, 07 Feb 2022 07:38:37 GMT'}
+2022-02-07 18:38:37,593 - MainThread - botocore.parsers - DEBUG - Response body:
+b'{"affectedAccounts":[],"eventScopeCode":"NONE"}'
+2022-02-07 18:38:37,593 - MainThread - botocore.hooks - DEBUG - Event needs-retry.health.DescribeAffectedAccountsForOrganization: calling handler <bound method RetryHandler.needs_retry of <botocore.retries.standard.RetryHandler object at 0x7fef9d39f990>>
+2022-02-07 18:38:37,594 - MainThread - botocore.retries.standard - DEBUG - Not retrying request.
+2022-02-07 18:38:37,594 - MainThread - botocore.hooks - DEBUG - Event after-call.health.DescribeAffectedAccountsForOrganization: calling handler <bound method RetryQuotaChecker.release_retry_quota of <botocore.retries.standard.RetryQuotaChecker object at 0x7fef9d39f290>>
+{
+    "affectedAccounts": []
+}

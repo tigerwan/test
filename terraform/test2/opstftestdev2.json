@@ -1,0 +1,120 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.26",
+  "serial": 0,
+  "lineage": "993802a1-6881-06a4-1f84-d7293ec593c6",
+  "outputs": {
+    "new_account_id": {
+      "value": "167246377706",
+      "type": "string"
+    },
+    "new_account_role_arn": {
+      "value": "arn:aws:iam::167246377706:role/terraform-lz-accountConfiguration-role",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "target_account_policy",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::167246377706:policy/terraform-lz-accountManagement-policy",
+            "description": "Allows Terraform to manage the account",
+            "id": "arn:aws:iam::167246377706:policy/terraform-lz-accountManagement-policy",
+            "name": "terraform-lz-accountManagement-policy",
+            "name_prefix": null,
+            "path": "/",
+            "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Action\": [\n        \"*\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.target_account_role",
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "target_account_role",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::167246377706:role/terraform-lz-accountConfiguration-role",
+            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"allowTerraformToAssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::877800914193:root\"},\"Action\":\"sts:AssumeRole\"}]}",
+            "create_date": "2020-06-22T22:52:10Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "terraform-lz-accountConfiguration-role",
+            "max_session_duration": 3600,
+            "name": "terraform-lz-accountConfiguration-role",
+            "name_prefix": null,
+            "path": "/",
+            "permissions_boundary": null,
+            "tags": null,
+            "unique_id": "AROASN4FJGLVDJRQ6VKIC"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "target_account_attachment",
+      "provider": "provider.aws.targetOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "terraform-lz-accountConfiguration-role-20200622225215289600000001",
+            "policy_arn": "arn:aws:iam::167246377706:policy/terraform-lz-accountManagement-policy",
+            "role": "terraform-lz-accountConfiguration-role"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_policy.target_account_policy",
+            "aws_iam_role.target_account_role",
+            "aws_organizations_account.account"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_organizations_account",
+      "name": "account",
+      "provider": "provider.aws.masterOrgRole",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:organizations::257337402470:account/o-qc789kj4jy/167246377706",
+            "email": "newsawsaccounts+ops-tf-test2-dev@news.com.au",
+            "iam_user_access_to_billing": null,
+            "id": "167246377706",
+            "joined_method": "CREATED",
+            "joined_timestamp": "2020-06-22T22:51:56Z",
+            "name": "OPSTFTEST2DEV",
+            "parent_id": "r-ec9k",
+            "role_name": null,
+            "status": "ACTIVE",
+            "tags": null
+          },
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ]
+}

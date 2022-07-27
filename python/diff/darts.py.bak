@@ -1,0 +1,63 @@
+import copy
+
+shortest_path_length = 999999999
+def discover_shortest_path(outstanding_score, path):
+
+    print('input:{};{}'.format(outstanding_score, path))
+    global shortest_path_length
+
+    if outstanding_score == 0:
+        return [path]
+
+    if len(path) > shortest_path_length:
+        return []
+
+    paths = []
+
+    for base_score in [50, 25, 3, 2, 1]:
+
+        count = outstanding_score // base_score
+
+        print('{} // {} = {}'.format(outstanding_score, base_score, count))
+        if count < 1:
+            continue
+        if base_score == 50:
+            count = min(1, count)
+            path.append("bull")
+        else:
+            count = min(20, count)
+            prefix = "s"
+            if base_score == 25:
+                prefix = "o"
+            elif base_score == 3:
+                prefix = "t"
+            elif base_score == 2:
+                prefix = "d"
+            path.append(prefix + str(count))
+
+        remainder = outstanding_score - base_score * count
+
+        result = discover_shortest_path(remainder, path)
+        print("result:{}".format(result))
+        if len(result) > 0:
+            print('result len({}) vs shortest pat({})'.format(len(result[0]), shortest_path_length))
+            if len(result[0]) <= shortest_path_length:
+                paths.append(copy.deepcopy(result[0]))
+                shortest_path_length = len(result[0])
+                print('paths change to {}'.format(paths))
+                print('shorest path change to {}'.format(shortest_path_length))
+        path.pop()
+
+    print('paths:{}'.format(paths))
+    return paths
+
+
+def find_min_throws(score):
+
+    throws = discover_shortest_path(score, [])
+    print("throws:{}".format(throws))
+    return min([len(t) for t in throws]) if len(throws) > 0 else 0
+
+
+if __name__ == "__main__":
+    print(find_min_throws(148))

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<header>
+</header>
+    <meta charset="UTF-8">
+<body>
+    <p>Hi,
+    <br>
+    <br>
+    The pipeline is going to deploy the following changes to the infrasutructure. If you have any concern, please abort the pipeline.
+    </p>
+    <br>
+    <!-- Here is terraform plan output -->
+    
+<p>An execution plan has been generated and is shown below.
+</p>
+<p>Resource actions are indicated with the following symbols:
+</p>
+<p style="color:rgb(255, 191, 0);">&emsp;~ update in-place
+</p>
+
+<p>Terraform will perform the following actions:
+</p>
+
+<p><b>&emsp;# aws_iam_role.terraform_test_role will be updated in-place
+</b></p>
+<p style="color:rgb(255, 191, 0);">&emsp;~ resource "aws_iam_role" "terraform_test_role" {
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;arn&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = "arn:aws:iam::431525257644:role/terraform-20200619071301334700000001"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;assume_role_policy&emsp;&emsp;= jsonencode(
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Statement = [
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Action&emsp;&emsp;= "sts:AssumeRole"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Effect&emsp;&emsp;= "Allow"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Principal = {
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Service = "ec2.amazonaws.com"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Sid&emsp;&emsp;&emsp; = ""
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;},
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;]
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Version&emsp; = "2012-10-17"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;)
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;create_date&emsp;&emsp;&emsp;&emsp;&emsp; = "2020-06-19T07:13:02Z"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;force_detach_policies = false
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;id&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= "terraform-20200619071301334700000001"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;max_session_duration&emsp;= 3600
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;name&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= "terraform-20200619071301334700000001"
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;path&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= "/"
+</p>
+<p style="color:rgb(255, 191, 0);">&emsp;&emsp;&emsp;~ tags&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= {
+</p>
+<p style="color:rgb(0, 255, 0);">&emsp;&emsp;&emsp;&emsp;&emsp;+ "environment" = "dev"
+</p>
+<p style="color:rgb(255, 191, 0);">&emsp;&emsp;&emsp;&emsp;&emsp;~ "name"&emsp;&emsp;&emsp;&emsp;= "test-role" -> "test-role-modified"
+</p>
+<p style="color:rgb(255, 0, 0);">&emsp;&emsp;&emsp;&emsp;&emsp;- "test"&emsp;&emsp;&emsp;&emsp;= "yes" -> null
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;}
+</p>
+<p>&emsp;&emsp;&emsp;&emsp;unique_id&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = "AROAWI6HI4GWDRBV35TM7"
+</p>
+<p>&emsp;&emsp;}
+</p>
+
+<p>Plan: 0 to add, 1 to change, 0 to destroy.
+</p>
+    <br>
+    <p> Regards
+    <br>
+    Operation team
+    </p>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+import logging
+
+class Singleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Log(metaclass=Singleton):
+
+    """
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        else:
+            logging.info("singleton: {}, {}".format(cls.__logger_level, cls.__loggers))
+        return cls.__instance
+
+    def __init__(self):
+        pass
+    """
+
+    def __init__(self):
+        self.__loggers = {}
+        self.__level = logging.INFO
+        self.__format = None
+
+    def getLoggers(self):
+        """
+        Return the singleton logger and set logging level
+        """
+        return self.__loggers
+
+
+    def getLogger(self, name="root"):
+        """
+        Return the singleton logger and set logging level
+        """
+        if not self.__loggers.get(name):
+            if name == "root":
+                self.__loggers[name] = logging.getLogger()
+            else:
+                self.__loggers[name] = logging.getLogger(name)
+
+        if self.__loggers[name].getEffectiveLevel() != self.__level:
+            self.__loggers[name].setLevel(self.__level)
+
+        return self.__loggers[name]
+
+    def setLevel(self, level=logging.INFO):
+        """
+        Apply logging level to all loggers
+        """
+        self.__level = level
+        for name in self.__loggers:
+            self.__loggers[name].setLevel(self.__level)
+

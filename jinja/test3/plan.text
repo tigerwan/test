@@ -1,0 +1,40 @@
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_iam_role.terraform_test_role will be updated in-place
+  ~ resource "aws_iam_role" "terraform_test_role" {
+        arn                   = "arn:aws:iam::431525257644:role/terraform-20200619071301334700000001"
+        assume_role_policy    = jsonencode(
+            {
+                Statement = [
+                    {
+                        Action    = "sts:AssumeRole"
+                        Effect    = "Allow"
+                        Principal = {
+                            Service = "ec2.amazonaws.com"
+                        }
+                        Sid       = ""
+                    },
+                ]
+                Version   = "2012-10-17"
+            }
+        )
+        create_date           = "2020-06-19T07:13:02Z"
+        force_detach_policies = false
+        id                    = "terraform-20200619071301334700000001"
+        max_session_duration  = 3600
+        name                  = "terraform-20200619071301334700000001"
+        path                  = "/"
+      ~ tags                  = {
+          + "environment" = "dev"
+          ~ "name"        = "test-role" -> "test-role-modified"
+          - "test"        = "yes" -> null
+        }
+        unique_id             = "AROAWI6HI4GWDRBV35TM7"
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.

@@ -1,0 +1,175 @@
+{
+   "app_name": "awsgo-cache-forwarder",
+   "version": "1.0",
+   "lambda_memory": "256",
+   "lambda_timeout": "900",
+   "region": "ap-southeast-2",
+   "log_retention_in_days": 30,
+   "share_account": "877800914193",
+   "master_region":  "ap-southeast-2",
+   "env_config":{
+      "beta": {
+         "s3_bucket":  {
+            "ap-southeast-2": "opsdev-deployment-bucket-ap-southeast-2",
+            "ap-southeast-1": "opsdev-deployment-bucket-ap-southeast-1"
+         },
+         "lambda":{
+            "ap-southeast-2": {
+               "lambda_sg": [ "sg-14e91170"],
+               "lambda_subnet": ["subnet-66ceec03"]
+            }
+         }
+      },
+      "prod": {
+         "s3_bucket":  {
+            "ap-southeast-2": "news-ops-serverless",
+            "ap-southeast-1": "news-ops-serverless-ap-southeast-1"
+         },
+         "lambda":{
+            "ap-southeast-2": {
+               "lambda_sg": [ "sg-80b351ef", "sg-8cb351e3", "sg-1a91c77e", "sg-1a91c77e", "sg-ae729ccb"],
+               "lambda_subnet": ["subnet-49d01921"]
+            }
+         }
+      }
+   },
+
+   "central_log_destination_arn": {
+      "ap-southeast-2":{
+         "arn": "arn:aws:logs:ap-southeast-2:877800914193:destination:central-logging-destination"
+      },
+      "ap-southeast-1":{
+         "arn": "arn:aws:logs:ap-southeast-1:877800914193:destination:central-logging-destination"
+      }
+   },
+
+   "filter_pattern": "{$.type = RESULT}",
+
+   "lambda_layer":{
+      "ap-southeast-2":{
+         "lib1": "arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_local_repos:5",
+         "lib2": "arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_comm:14",
+         "lib3": "arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_aws:15",
+         "lib4": "arn:aws:lambda:ap-southeast-2:877800914193:layer:autolib_application:5"
+      },
+      "ap-southeast-1":{
+         "lib1": "arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_local_repos:1",
+         "lib2": "arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_comm:1",
+         "lib3": "arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_aws:7",
+         "lib4": "arn:aws:lambda:ap-southeast-1:877800914193:layer:autolib_application:2"
+      }
+   },
+
+   "cloudwatch_event_rule":{
+      "rule1":{
+         "description": "CloudWatch events triggering the cache update, e.g. EC2 status change",
+         "event":{
+            "source":[
+               "aws.ec2",
+               "aws.rds",
+               "aws.autoscaling"
+            ],
+            "detail-type":[
+               "EC2 Instance State-change Notification",
+               "RDS DB Instance Event",
+               "RDS DB Cluster Event",
+               "EC2 Instance Launch Successful",
+               "EC2 Instance Terminate Successful"
+            ]
+         }
+
+      },
+
+      "rule2": {
+         "description": "CloudWatch events about tags triggering the cache update",
+         "event":{
+            "source": [
+               "aws.tag"
+            ],
+            "detail-type":[
+               "Tag Change on Resource"
+            ],
+            "detail":{
+               "service":[
+                  "ec2",
+                  "rds"
+               ],
+               "resource-type":[
+                  "instance",
+                  "db"
+               ]
+            }
+         }
+      },
+
+      "rule3":{
+         "description": "Events only caputred by CloudTrail, e.g. resource deletion",
+         "event":{
+            "source":[
+               "aws.autoscaling"
+            ],
+            "detail-type":[
+               "AWS API Call via CloudTrail"
+            ],
+            "detail":{
+               "eventSource":[
+                  "autoscaling.amazonaws.com"
+               ],
+               "eventName":[
+                  "DeleteAutoScalingGroup"
+               ]
+            }
+
+         }
+      },
+
+      "rule4":{
+         "description": "Events forwarded from othe regions",
+         "event":{
+            "source":[
+               "awsgo.aws.tag",
+               "awsgo.aws.ec2",
+               "awsgo.aws.rds",
+               "awsgo.aws.autoscaling"
+            ]
+         }
+      }
+
+   },
+
+   "event_bus": "arn:aws:events:ap-southeast-2:877800914193:event-bus/default",
+
+   "event_role_policy":[
+      {
+          "PolicyName": "EventPolicy",
+          "PolicyDocument":{
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Action": [
+                          "events:PutEvents"
+                      ],
+                      "Resource": [
+                        "arn:aws:events:ap-southeast-2:877800914193:event-bus/default"
+                      ]
+                  }
+              ]
+          }
+      }
+   ],
+
+   "event_role_assume_role_policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "events.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+      ]
+   }
+
+}

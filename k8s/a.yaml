@@ -1,0 +1,225 @@
+Name:         aws-auth
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+mapRoles:
+----
+- groups:
+  - system:bootstrappers
+  - system:nodes
+  rolearn: arn:aws:iam::894695242608:role/eksctl-daniel-eksctl-eks-nodegrou-NodeInstanceRole-YDI72BY5I69
+  username: system:node:{{EC2PrivateDNSName}}
+
+Events:  <none>
+
+
+Name:         coredns
+Namespace:    kube-system
+Labels:       eks.amazonaws.com/component=coredns
+              k8s-app=kube-dns
+Annotations:  <none>
+
+Data
+====
+Corefile:
+----
+.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+      pods insecure
+      fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+
+Events:  <none>
+
+
+Name:         cp-vpc-resource-controller
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  control-plane.alpha.kubernetes.io/leader:
+                {"holderIdentity":"ip-10-0-114-147.ap-southeast-2.compute.internal_de59a4f6-a2e9-4c20-b2c8-a573433daf96","leaseDurationSeconds":30,"acquir...
+
+Data
+====
+Events:  <none>
+
+
+Name:         eks-certificates-controller
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  control-plane.alpha.kubernetes.io/leader:
+                {"holderIdentity":"ip-10-0-114-147.ap-southeast-2.compute.internal","leaseDurationSeconds":30,"acquireTime":"2021-06-01T00:05:16Z","renewT...
+
+Data
+====
+Events:  <none>
+
+
+Name:         extension-apiserver-authentication
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+requestheader-client-ca-file:
+----
+-----BEGIN CERTIFICATE-----
+MIIC0DCCAbigAwIBAgIBADANBgkqhkiG9w0BAQsFADAZMRcwFQYDVQQDEw5mcm9u
+dC1wcm94eS1jYTAeFw0yMTA2MDEwMDAzMzdaFw0zMTA1MzAwMDAzMzdaMBkxFzAV
+BgNVBAMTDmZyb250LXByb3h5LWNhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAoDZPLWrhmrhHOa+IjOoQthBiPKfCraF7LWsoq3gX0XaY39z3uArw8t93
+nA1zb0aVQtkGN83K4P3+P567x/xJjzl9IUnLTZhdabe4ItbuLnshtTr16ed9vvkO
+LJSl97wy9WoK3+UHBMnruwX87QyCM9wFEnUhde/UoDXc8tBnzGzsQxT4XdMyfJbo
+Kk40PxbJlKgWQ+N6Rsfdr73nr2IvP1jrQ9IuaPJ5egLqXmpeh2/nV8VgBTlohCJi
+apwzvMOAoHgO1MQc1vx7cEi666g9jtSnCfdl8FMjZgrgaENb945s/NZX+QbA9ka3
+7I40cQwX1I6q3yjEYcBDpVuAqXzHywIDAQABoyMwITAOBgNVHQ8BAf8EBAMCAqQw
+DwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEALENNSu6JJC+CxD2Y
+60asnbCb4vxoxQzdTU6Bq5FnDjJ8uXa9JrguLmImkbSZH7nobaYILb32VIIX4a8R
+9gi1YF8wZJ3Z8WdNsFKoMm8UYcIqT8+5YQAySQCVV9u1Rra1xHv8wi+GuoCdo3Bs
+oYu08UjeNP6v77njodFclEhvnUfIOhtkBUFmRLCvXRMiSgK/BJ+e2ulIHY/4tiSF
+Jrr82lqBImnj0wbY3WzpdQxHS0lCS3cP9rd1t0VI9WANyaALjZG+TFesCZe6Dvro
+VDa0Dh6MBok8TAexF5G9xCxi0XvBMrzg62gspFIKBClONe6BdOQH1Qsm67AnhOKv
+RNxkng==
+-----END CERTIFICATE-----
+
+requestheader-extra-headers-prefix:
+----
+["X-Remote-Extra-"]
+requestheader-group-headers:
+----
+["X-Remote-Group"]
+requestheader-username-headers:
+----
+["X-Remote-User"]
+client-ca-file:
+----
+-----BEGIN CERTIFICATE-----
+MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+cm5ldGVzMB4XDTIxMDYwMTAwMDM1M1oXDTMxMDUzMDAwMDM1M1owFTETMBEGA1UE
+AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANwQ
+e0hPhTaQZcyGovv5kO8iqtmKxqyqt1ldBLlBjiQK1QXh44Ec/1J+tVH91pCD3pRF
+XOnhsaLVOorEP3xkAcdky0nj99x+kv5ZWXXyhhh007FYM9LFcZNGquY9wGENwTbi
+XL+he5+48YCi5mf+ULVd7wLEoQtBKdLyfk4KBngi4lwu4jwafObZStYZ9ty7lCe0
+XRObbMJIB5jW6Xcpi9c8tp5Pz98YFnmaR/EEY7Lx5RRd9BMn1TjMwazoMLk1VJeF
+FcNsfGMrU1k5n3HhG7TP7ko0P9c2YuvygslvYv6tm61S6y517LQAEbSJwySNKeku
+m4iyJ79cTC1tpKP5Fw0CAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBALjv+/noFvg4Go8lxJdGKcx6oIMr
+VVStg/Vrs9ejVxziw2YuBPGNYAIHRpBP9h79PwIkWoe4VQKRV8MAN/WIIgwbSb2B
++XP8esArfxpn4/mPja0IiRWvyvB9CbI9k6yxJ4pParaqALNue4wCbeygOn1gJbrr
+CDo+qV5BhTpx9cTYrOJMimo+iv6X/Dq3lxSVqxom73h/7gtvNq1UoFrq3NPuDeYW
+XYc6MJTUSxgMyDmhPLxxG9jkMIzuYGVGB2FHVxPTQd7rR3t4rG68/rtdgWwz5A+I
+HayvkzTVhUiihdbfMTLInBi38pslGuoxfbSQEVwQmceIH527JEhjdagI+/M=
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+cm5ldGVzMB4XDTIxMDYwMTAwMDgxMloXDTMxMDUzMDAwMDgxMlowFTETMBEGA1UE
+AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKNw
+1Y+NODyZk5uJFQM3uNzvxYERwmfkElsL5u0qMp3quwSqxQA/MuaooumSGeMDq9Uh
+fI8yva9keeBAhHYqPIJ5KFLipDE4A4agxWTSjhtCX0PY3EebAgLaXujWkYQWyxgZ
+72I1WVQ4QmwpM2js7CODPU8/nxBffauDQUfnKb9JmiZYJtzLAu1bVGQ2LQGAYhOt
+ZfuggOHpF5tgwCiyQuaTTcQfmImTkW8HuYbXBuDB7FDsqe49AyXuw3yx2lWGJ0fY
+NixSqoMLbRcx69/tiKXza5nf2yflFM1ex4H4Prixh4rd3p5uwQYNbjn/aiFO9WNr
+TQD4i/dKJbpF4DZKkK0CAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAI+GALChXa5vFZxPQaWjGIJ9ZF94
++2Uudh/mGJXc6LakVuxls5sRtXo65h1QesWpg3KBjZ2UBPW8jqfY0/e09nJovuDv
+sBCqgcyMp5QVYMkv9H004SWCwiP99dtJGFl4b/Hq+Zfb9bT0EEhV8hc0R3D/HoFG
+ktnw1IzFTW8W0qQ1k+D1frBdlStCJtFDonxppfbHh0BhJKGBnoi/2bUExbda9nCr
+AfeEHtO9ybzGVnwhmaV8mZWCQpsTZsQCTl2XazmgZn4GY0aAM9WXVazLliO2yv9O
+JO/2sDk8BL2z45PVV128XexCwbTZbUODXadTFDsAFyXep6AjG5DPltXoSOU=
+-----END CERTIFICATE-----
+
+requestheader-allowed-names:
+----
+["front-proxy-client"]
+Events:  <none>
+
+
+Name:         kube-proxy
+Namespace:    kube-system
+Labels:       eks.amazonaws.com/component=kube-proxy
+              k8s-app=kube-proxy
+Annotations:  <none>
+
+Data
+====
+kubeconfig:
+----
+kind: Config
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    server: https://0d2ac2542dd1d74049562f9f54d69463.gr7.ap-southeast-2.eks.amazonaws.com
+  name: default
+contexts:
+- context:
+    cluster: default
+    namespace: default
+    user: default
+  name: default
+current-context: default
+users:
+- name: default
+  user:
+    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+Events:  <none>
+
+
+Name:         kube-proxy-config
+Namespace:    kube-system
+Labels:       eks.amazonaws.com/component=kube-proxy
+              k8s-app=kube-proxy
+Annotations:  <none>
+
+Data
+====
+config:
+----
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+bindAddress: 0.0.0.0
+clientConnection:
+  acceptContentTypes: ""
+  burst: 10
+  contentType: application/vnd.kubernetes.protobuf
+  kubeconfig: /var/lib/kube-proxy/kubeconfig
+  qps: 5
+clusterCIDR: ""
+configSyncPeriod: 15m0s
+conntrack:
+  maxPerCore: 32768
+  min: 131072
+  tcpCloseWaitTimeout: 1h0m0s
+  tcpEstablishedTimeout: 24h0m0s
+enableProfiling: false
+healthzBindAddress: 0.0.0.0:10256
+hostnameOverride: ""
+iptables:
+  masqueradeAll: false
+  masqueradeBit: 14
+  minSyncPeriod: 0s
+  syncPeriod: 30s
+ipvs:
+  excludeCIDRs: null
+  minSyncPeriod: 0s
+  scheduler: ""
+  syncPeriod: 30s
+kind: KubeProxyConfiguration
+metricsBindAddress: 127.0.0.1:10249
+mode: "iptables"
+nodePortAddresses: null
+oomScoreAdj: -998
+portRange: ""
+udpIdleTimeout: 250ms
+Events:  <none>
